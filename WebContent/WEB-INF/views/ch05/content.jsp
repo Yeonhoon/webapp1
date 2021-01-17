@@ -25,42 +25,24 @@
 				
 				<div class="content">
 					<div class="sector">
-						<h5>Request Mapping</h5>
+						<h5>헤더값 읽기</h5>
 						<div>
-							GET 방식: <a class = "btn btn-info btn-sm" href="getMethod">request1</a> <%-- get 방식 --%>
-							<br /><br />
-							POST 방식: <form method="post" action="postMethod" style="display:inline-block;"> <%-- post 방식 --%>
-								<button class = "btn btn-info btn-sm">request1</button>
-							</form> 
+							GET 방식: <a class = "btn btn-info btn-sm" href="method2">브라우저 정보 얻기</a> 
+						</div>
+					</div>
+					
+					
+					<div class="sector">
+						<h5>HttpServletResponse를 이용</h5>
+						<div>
+							<a class = "btn btn-info btn-sm" href="method3">쿠키생성 및 보내기</a> 
 						</div>
 					</div>
 					
 					<div class="sector">
-						<h5>요청방식 별 회원가입 처리</h5>
+						<h5>HttpServletRequset를 이용</h5>
 						<div>
-							GET 방식: <a class = "btn btn-info btn-sm" 
-										href="signUp">회원가입</a> <%-- get 방식 --%>
-							<br /><br />
-						</div>
-						
-						<div>
-							<h5>비동기 처리</h5>
-							<div>
-								GET 방식: <a class="btn btn-info btn-sm" href="javascript:fun1()">회원가입</a>
-								<script>
-									function fun1() {
-									    $.ajax({
-									        url: "joinAsync",
-									        method: "get",
-									        success: function(data) {
-									            console.log(data);
-									            $("#joinForm").html(data);
-									        }
-									    });
-									};
-								</script>
-								<div id="joinForm" style="margin-top: 50px;"></div>
-							</div>
+							<a class = "btn btn-info btn-sm" href="method5">쿠키 읽기</a> 
 						</div>
 					</div>
 				</div>

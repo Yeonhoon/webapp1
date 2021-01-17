@@ -35,13 +35,13 @@ public class Ch02Controller {
 	
 	@GetMapping(value="/signUp")
 	public String signUpForm() {
-		logger.info("signUP Success");
+		logger.info("동기로 창 띄우기");
 		return "ch02/signUpForm";
 	}
 	
 	@GetMapping(value="/joinAsync")
 	public String joinFormAsync() {
-		logger.info("join Success");
+		logger.info("비동기로 창 띄우기");
 		return "ch02/joinFormAsync";
 	}
 	

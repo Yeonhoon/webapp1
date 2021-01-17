@@ -33,7 +33,8 @@
 					<h5>회원가입</h5>
 					<div>
 						<form action="signUp" method="post">
-							아이디: <input type="text" /> <br /> 이름: <input type="text" /><br />
+							아이디: <input type="text" /> <br /> 
+							이름: <input type="text" /><br />
 							패스워드: <input type="password" /><br /> 
 							POST 방식: <input type="submit" value="회원가입" class="btn btn-info"/>
 						</form>

@@ -1,4 +1,3 @@
-
 <%--import 속성 --%>
 <%@page import ="java.util.*, java.text.*" %>
 
@@ -27,23 +26,6 @@
 			<jsp:include page="/WEB-INF/views/include/menu.jsp"/>
 			</div>
 			
-			<div class="content">
-				<div class="sector">
-					<h5>개발 환경 구축</h5>
-					<div>교재 참고하여 1장 진행하기</div>
-				</div>
-
-				<div class="sector">
-					<h5>개발 환경 구축</h5>
-					<div>교재 참고하여 1장 진행하기</div>
-				</div>
-
-				<div class="sector">
-					<h5>개발 환경 구축</h5>
-					<div>교재 참고하여 1장 진행하기</div>
-				</div>
-				
-			</div>
 			
 		</div>
 		

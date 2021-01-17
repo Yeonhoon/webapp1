@@ -1,5 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -25,44 +25,38 @@
 				
 				<div class="content">
 					<div class="sector">
-						<h5>Request Mapping</h5>
+						<h5>파일 업로드</h5>
 						<div>
-							GET 방식: <a class = "btn btn-info btn-sm" href="getMethod">request1</a> <%-- get 방식 --%>
-							<br /><br />
-							POST 방식: <form method="post" action="postMethod" style="display:inline-block;"> <%-- post 방식 --%>
-								<button class = "btn btn-info btn-sm">request1</button>
-							</form> 
+							<form action="photoupload" method="post" enctype="multipart/form-data">
+								<input type="text" name="uid" placeholder="ID"/><br /><br />
+								<input type="text"  name="uname" placeholder="NAME"/><br /><br />
+								<input type="password"  name="upw" placeholder="PW"/><br /><br />
+								<input type="file" name="uphoto" /><br /><br /> <%--multiple="multiple" 로하고자 한다면 dto에서 필드값을 배열로 주어야 함 --%>
+								<input type="submit" class="btn btn-primary btn-sm" value="upload"/>
+							</form>
 						</div>
 					</div>
 					
+						<h5>파일 리스트</h5>
 					<div class="sector">
-						<h5>요청방식 별 회원가입 처리</h5>
 						<div>
-							GET 방식: <a class = "btn btn-info btn-sm" 
-										href="signUp">회원가입</a> <%-- get 방식 --%>
-							<br /><br />
-						</div>
-						
-						<div>
-							<h5>비동기 처리</h5>
-							<div>
-								GET 방식: <a class="btn btn-info btn-sm" href="javascript:fun1()">회원가입</a>
-								<script>
-									function fun1() {
-									    $.ajax({
-									        url: "joinAsync",
-									        method: "get",
-									        success: function(data) {
-									            console.log(data);
-									            $("#joinForm").html(data);
-									        }
-									    });
-									};
-								</script>
-								<div id="joinForm" style="margin-top: 50px;"></div>
-							</div>
+							<script>
+							<%--자동실행--%>
+								$(function() {
+								    $.ajax({
+								        url:"photolist",
+								        success:function(data){
+								        	 $("#photolist").html(data); 
+								        }
+								    })
+								});
+							</script>
+							<div id="photolist"></div>
 						</div>
 					</div>
+					
+					
+					
 				</div>
 			</div>
 		</div>

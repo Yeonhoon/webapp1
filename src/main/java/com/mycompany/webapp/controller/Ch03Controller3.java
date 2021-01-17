@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.mycompany.webapp.dto.Ch03Dto;
+
 @Controller
 @RequestMapping("/ch03") //컨트롤러의 경로는 반드시 requestMapping 사용해야 함. 요청 시 ch03이 있을 때 실행하겠다.
 public class Ch03Controller3 {
@@ -53,6 +55,18 @@ public class Ch03Controller3 {
 
 		return "ch03/content";
 	}
+	
+	@RequestMapping("/method4")
+	public String method4(Ch03Dto dto) {
+		logger.info("param1:" + dto.getParam1());
+		logger.info("param2:" + dto.getParam2());
+		logger.info("param3:" + dto.getParam3());
+		logger.info("param4:" + dto.isParam4()); //boolean의 getter는 is~
+		logger.info("param4:" + dto.getParam5());
+
+		return "ch03/content";
+	}
+	
 }
 
 
