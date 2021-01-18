@@ -3,16 +3,19 @@ package com.mycompany.webapp.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Resource;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.mycompany.webapp.dto.Prac2Dto;
+import com.mycompany.webapp.service.PracService;
 
-@Controller
-@RequestMapping("/prac")
-public class Prac2 {
+
+public class Prac2Controller {
 
 	@GetMapping("/modelLogin")
 	public String modelLogin(Model model) {
@@ -34,7 +37,7 @@ public class Prac2 {
 		return "prac/prac";
 	}
 	
-	@GetMapping("/modelogin3")
+	@GetMapping("/modelLogin3")
 	public String modelLogin3(Model model) {
 		List <Prac2Dto> list = new ArrayList<>();
 		
@@ -50,6 +53,7 @@ public class Prac2 {
 		return "prac/prac";
 	}
 	
+
 	
 	
 	

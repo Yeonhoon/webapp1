@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,6 +18,7 @@ import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
@@ -26,9 +28,11 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.mycompany.webapp.dto.Prac2Dto;
 import com.mycompany.webapp.dto.PracBoardDto;
 import com.mycompany.webapp.dto.PracDto;
 import com.mycompany.webapp.dto.PracUpdown;
+import com.mycompany.webapp.service.PracService;
 
 @Controller
 @RequestMapping("/prac")
@@ -249,7 +253,7 @@ public class PracController {
 	 }
 	 
 	 @GetMapping("/photodownload")
-		public void photoDownlaod(String photo, HttpServletResponse response) {
+	public void photoDownlaod(String photo, HttpServletResponse response) {
 			//photolist에서 photo라는 이름으로 요청을 했기 떄문에 똑같이 photo라는 이름으로 매개변수 선언
 			//void인 이유는 다운로드하고 끝이기 떄문에 응답이 없음. 브라우저는 응답이 올때까지 기다리게 됨.
 			//그래서 404페이지가 뜨는데 그 페이지에서는.jsp파일을 요구함 왜냐하면 web.xml에서 servletmapping에서 /로 되어있기 때문.
@@ -307,8 +311,72 @@ public class PracController {
 			}
 		}
 	 
+	 @RequestMapping("/modellogin")
+		public String modelLogin(Model model) {
+			model.addAttribute("id","jyhoon94");
+			model.addAttribute("pw","Zpflrjs94!");
+			
+			return "prac/loginPrac";
+		}
+		
+	@RequestMapping("/modellogin2")
+		public String modelLogin2(Model model) {
+			Prac2Dto dto = new Prac2Dto();
+			
+			dto.setId("jyhoon94");
+			dto.setPw("Zpflrjs94!");
+			
+			model.addAttribute("dto",dto);
+			
+			return "prac/loginPrac";
+		}
+		
+	@RequestMapping("/modellogin3")
+		public String modelLogin3(Model model) {
+			List <Prac2Dto> list = new ArrayList<>();
+			
+			Prac2Dto dto = new Prac2Dto();
+			
+			for(int i=1; i<10; i++) {
+				dto.setId("id"+i);
+				dto.setPw("pw"+i);
+				list.add(dto);
+			}
+			
+			model.addAttribute("list",list);
+			return "prac/loginPrac";
+		} 
 	 
-
+	@RequestMapping("/sessionlogin")
+	public String sessionlogin(HttpSession session) {
+		logger.info("session 페이지로 이동");
+		return "prac/loginPrac";
+	}
+	
+	@PostMapping("session1")
+	public String session1(HttpSession session, String uid, String upw) {
+		if(uid.equals("qwerty") && upw.equals("123456")) {
+			session.setAttribute("loginStatus", "ok");
+		}
+		return "redirect:/prac/loginPrac";
+	}
+	
+	@RequestMapping("session2")
+	public String session2(HttpSession session) {
+		session.invalidate();
+		return "redirect:/prac/loginPrac";
+	}
+	
+	@Resource
+	private PracService service1;
+	
+	@Autowired
+	public void setService1(PracService service1) {
+		logger.info("실행"); 
+		this.service1 = service1;
+		
+	}
+	
 	
 	
 }

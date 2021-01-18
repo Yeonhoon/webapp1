@@ -16,8 +16,6 @@
 		<div class="wrap">
 			<%--헤더 --%>
 			<jsp:include page="/WEB-INF/views/include/header.jsp"></jsp:include>
-			<%-- 아래와 같은 방법은 복사 붙여넣기라서 동일한 내용이 있으면 에러가 난다.
-			<%@ include file="/WEB-INF/views/include/header.jsp" %> --%>
 			
 			<%--내용 --%>
 			<div class="mainCenter">

@@ -14,6 +14,16 @@
 
 	<body>
 		<div>
+			<h5>로그인</h5>
+			<div>
+			<form action="">
+				<input type="text" name="name" id="name"/>
+				<input type="text" name="uid" id="name"/>
+				<input type="password" name="upw" id="name"/>
+				<input type="text" name="name" id="name"/>
+			</form>
+			</div>
+		
 			<h5>연습장</h5>
 			<div>안녕하세요</div>
 			<a href="myprac" class="btn btn-info btn-sm" >myprac으로 이동하기</a>
@@ -159,10 +169,15 @@
 		
 		<div >
 			<h5>model 연습</h5>
-			<a href="modelLogIn" class="btn btn-primary">model1</a>
-			<a href="modelLogIn2" class="btn btn-secondary">model2</a>
-			<a href="modelLogIn3" class="btn btn-danger">model3</a>
+			<a href="modellogin" class="btn btn-primary">model1</a>
+			<a href="modellogin2" class="btn btn-secondary">model2</a>
+			<a href="modellogin3" class="btn btn-danger">model3</a>
 
+		</div>
+		<hr />
+		<div>
+			<h5>session 연습</h5>
+			<a href="sessionlogin" class="btn btn-primary">session1</a>
 		</div>
 		
 		
