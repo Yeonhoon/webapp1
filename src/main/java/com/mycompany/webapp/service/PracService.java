@@ -1,13 +1,23 @@
 package com.mycompany.webapp.service;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.List;
 
+import javax.annotation.Resource;
+
+import org.springframework.stereotype.Service;
+
+import com.mycompany.webapp.dao.PracDao;
+import com.mycompany.webapp.dto.PracDto;
+
+@Service
 public class PracService {
+
 	
-	private static final Logger logger = LoggerFactory.getLogger(PracService.class);
+	@Resource
+	private PracDao pracDao;
 	
-	public void method1() {
-		logger.info("실행");
+	public List<PracDto> getBoardList() {
+		List<PracDto> dto = pracDao.heroBoard();
+		return dto;
 	}
 }

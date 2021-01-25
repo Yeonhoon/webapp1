@@ -87,7 +87,7 @@ public class Ch05Controller {
 
 }
 	
-	//for문 안스고 쿠키 가져오기
+	//for문 안 쓰고 쿠키 가져오기
 	@GetMapping("/method5")
 	public String method5(@CookieValue("memberId")String memberId, @CookieValue("loginStatus") String loginStatus) { //request를 통해 정보 얻기 //response: 브라우저로 어떤 것을 보내고자 할 때
 	

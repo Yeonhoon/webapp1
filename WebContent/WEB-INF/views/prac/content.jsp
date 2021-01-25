@@ -1,5 +1,8 @@
 <%@ page  contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+
+
 <!DOCTYPE html>
 <html>
 	<head>
@@ -10,177 +13,132 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 		<link rel="stylesheet" href="<%=application.getContextPath()%>/resources/css/main.css">
+	<style type="text/css">
+		.section {
+			margin-bottom:50px;
+		}
+	</style>
+	
+	<script>
+		function logout(){
+		    confirm = window.confirm("로그아웃하시겠습니까?");
+		        if(confirm){
+		           $.ajax({
+		               method:"get",
+		               url:"logout",
+		               success: function(data){
+		                   alert("로그아웃되었습니다");
+		                   location.reload();
+		               }
+		           })
+		        }
+		    }
+		
+	</script>
 	</head>
 
-	<body>
-		<div>
-			<h5>로그인</h5>
-			<div>
-			<form action="">
-				<input type="text" name="name" id="name"/>
-				<input type="text" name="uid" id="name"/>
-				<input type="password" name="upw" id="name"/>
-				<input type="text" name="name" id="name"/>
-			</form>
-			</div>
-		
-			<h5>연습장</h5>
-			<div>안녕하세요</div>
-			<a href="myprac" class="btn btn-info btn-sm" >myprac으로 이동하기</a>
-			<hr />					
-			<form action="content">	content 실행하기</form>
-			<hr />
-			
-			<h5>동기 실행하기</h5>
-			<a href="sync" class="btn btn-danger btn-sm">동기 실행</a>
-			<br /><br />
-			<h5>비동기 실행으로 로그인하기</h5>
-			<a class="btn btn-danger btn-sm" href="javascript:async()">비동기 실행</a>
-			<script>
-				function async(){
-				    $.ajax({
-				        url:"async",
-				        method: "get",
-				        success: function(data){
-				            console.log(data);
-				            $("#signinForm").html(data);
-				        }
-				    });
-				};
-			</script>
-			<hr />
-			<div id="signinForm" style="margin-top:50px;"></div>
-			<hr />
-			<br />
-			<h5>비동기 실행으로 회원가입하기</h5>
-			<a href="javascript:asyncJoin()" class="btn btn-primary btn-sm">회원가입</a>
-			<script>
-				const asyncJoin = () => {
-				    $.ajax({
-				        url:"asyncJoin",
-				        method: "get",
-				        success: function(data){
-				            console.log(data);
-				            $("#joinBtn").html(data);
-				        }
-				    });
-				};
-			</script>
-			<div id="joinBtn"></div>
-			<br /><hr />
-			
-			<div>
-				<h5>DTO 구현하여 입력창 만들기</h5>
-				<form action="myDTO" method="post" >
-					이름:<input type="text" name="param1" value="이름"/>
-					나이: <input type="text" name="param2" value=24 />
-					직업: <input type="text" name="param3" value="백수"/>
-					주소: <input type="text" name="param3" value="서울"/>
-
-				</form>
-			</div>
-			<br />
-			<hr />
-			<div>
-				<a href="header" class= "btn btn-secondary">header 정보 얻기</a>
-				<br />
-				<a href="servletRequest" class = "btn btn-primary">httpServletRequest로 header 정보 얻기</a>
-				 <br />
-				 <a href="cookie1" class="btn btn-info">cookie 보내기</a>
-			</div>
-			<br />
-			<hr />
-			<h5>forward 테스트</h5>
-			<div>
-				<a href="forward" class="btn btn-primary">forward로 이동하기</a>
-				
-			</div>
-			<br />
-			<div>
-				<h5>redirect 테스트</h5>
-					<a href="redirectLogin" class="btn btn-danger">로그인하기</a>
-			</div>
-			<br />
-			<hr />
-			<div>
-				<h3>model 이용한 스칼라, 객체, 컬렉션 보내기</h3>
-				<h5>스칼라 전달</h5>
-				<a href="scala" class="btn btn-primary">전달</a>
-				<br />
-			
-				<h5>객체 전달</h5>
-				<a href="object" class="btn btn-primary">전달</a>
-				<br />
-				
-				<h5>컬렉션 전달</h5>
-				<a href="collection" class="btn btn-primary">전달</a>
-				<br />
-				
-			</div>
-			
-			<br />
-			<hr />
-			<div>
-				<h5>session 이용하기</h5>
-				
-				<c:if test="${loginStatus ==null }">
-			<div>
-				<form action="login" method="post">
-					<input type="text" name="uid"/>
-					<input type="password" name="upw"/>
-				</form>
-			</div>
+	<div class="section">
+		<h3>1. 로그인 로그아웃</h3>
+		<c:if test="${loginStatus eq null }">
+			<a href="login"  class="btn btn-success btn-sm">로그인</a>
 		</c:if>
 		
-		<c:if test="${loginStatus != null }">
-			<div>
-				<a href="logout" class="btn btn-danger"></a>
-			</div>
+		<c:if test="${loginStatus ne null}">
+			<input type= "button" onclick="logout();" id="logout" class="btn btn-danger btn-sm" value="로그아웃">
 		</c:if>
-				
-			</div>
-			
-			<h5>회원가입으로 사진 업로드하기</h5>
-		<div>
-			<div>
-			<form action="upload"  method="post" enctype = "multipart/form-data">
-				<input type="text" name="id" placeholder="ID"/>
-				<input type="password" name="pw" placeholder="PW" />
-				<input type="text" name="fname" placeholder="First Name"/>
-				<input type="text" name="lname" placeholder="Last Name" />
-				<input type="file" name="photo"/>
-				<input type="submit" value="upload"/>
-			</form>		
-		</div>
-		</div>
-			<script>
-				$(function(){
-					  $.ajax({
-					      url:"photolist",
-					      success: function(data){
-					          $("#photolist").html(data);
-					      }
-					  })  
-					})
-			</script>	
-			<div id="photolist"></div>	
-			
-		</div>
 		
-		<div >
-			<h5>model 연습</h5>
-			<a href="modellogin" class="btn btn-primary">model1</a>
-			<a href="modellogin2" class="btn btn-secondary">model2</a>
-			<a href="modellogin3" class="btn btn-danger">model3</a>
-
-		</div>
-		<hr />
-		<div>
-			<h5>session 연습</h5>
-			<a href="sessionlogin" class="btn btn-primary">session1</a>
-		</div>
+		<c:choose>
+			<c:when test="${loginStatus.uid ne null}">
+				<a><b>${loginStatus.uid}님</b> 반갑습니다!</a>
+			</c:when>			
+		</c:choose>
+	</div>
+	<div class="section">
+		<c:choose>
+			<c:when test="${loginStatus.uid ne null}">
+			<h3>2. 글쓰기 페이지</h3>
+			<a href="write" class="btn btn-secondary btm-sm">글쓰기</a>
+			</c:when>
+		</c:choose>
+	</div>
+	
+	
+	<div class="section">
+		<h3>3. 게시판 불러오기</h3>
+		<a href="<%=application.getContextPath()%>/prac/boardlist" class="btn btn-primary btn-sm">게시판 호출</a>
+		<br />
+		<br />
+		<table class="table table-bordered table-small">
+			<tr>
+				<th>아이디</th>
+				<th>패스워드</th>
+			</tr>
+			<c:forEach var="user" items="${myList}">
+					<tr>
+						<td>${user.uid}</td>
+						<td>${user.upw}</td>
+					</tr>		
+			</c:forEach>
+		</table>
+	</div>	
+	<div class="section">
+		<h5>DB와의 연결 확인하기</h5>
+		<a href="javascript:conntest()" class="btn btn-small btn-danger">연결시도</a>		
+		<script>
+			const conntest = function() {
+			    $.ajax({
+			        url:"conntest",
+			        method: "get",
+			        success: function(data){
+			            $("#connspan").html(data)
+			        }
+			    });
+			}
+		</script>
+		<span id="connspan" style="color:red; font-weight: bold;"></span>
+	</div>
+	<div class="section">
+		<h5>json으로 파일 받기</h5>
+		<a href="javascript:json1()" class="btn btn-primary">javascript 객체{  } 받기</a><br />
+		<a href="javasript:json2()" class="btn btn-primary">javascript 배열[ ] 받기</a><br />
+	<script>
+		function json1(){
+		    $.ajax({
+		        url:"jsonobject",
+		    	method: "get",
+		    	success: function(data){
+		    	    console.log(data);
+		    	 	$("#name").html(data.name);
+		    	 	$("#hobby").html(data.hobby);
+		    	 	$("#dreamcar").html(data.dreamcar.brand);
+		    	 	<%-- 배열 출력 --%>
+		    	 	for(var i=0; i<data.OverWatch.length; i++){
+			    	 	$("#hero").append(data.OverWatch[i]);
+		    	 	    
+		    	 	}
+		    	}
+		    });
+		}		
+	</script>
+	<div>
+		<div id="name"></div>
+		<div id="hobby"></div>
+		<div id="dreamcar"></div>
+		<div id="hero"></div>
+	</div>
+	
 		
+	</div>
+	
+	<div class="section">
+		<h5>DB에서 데이터 가져오기</h5>
+		<a href=""></a>
+		
+		
+	</div>
+	
 		
 	</body>
 	
 </html>
+

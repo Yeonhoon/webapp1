@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mybatis.mapper.boards">
+	<select id="selectAll" resultType = "board"> <!-- resyltType: config.xml에서 alias로 저장한 이름 --> 
+		select bno, btitle, bcontent, bhitcount, bwriter, bdate from boards
+	</select>
+	
+	
+	<!-- 데이터 집어넣기 : not null 값은 모두 들어가야함.-->
+	<insert id= "insert" parameterType="board"> 
+		insert into boards
+		(bno, btitle, bcontent, bwriter,  bdate, bhitcount)
+		values
+		(bno_seq.nextval, #{btitle}, #{bcontent}, #{bwriter}, sysdate, 0)
+	
+	</insert>
+	
+</mapper>

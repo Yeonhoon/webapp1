@@ -1,32 +1,34 @@
 package com.mycompany.webapp.dto;
 
 public class PracDto {
-	private String param1;
-	private int param2;
-	private String param3;
-	public String getParam1() {
-		return param1;
+	private int bno;
+	private String btitle;
+	private String bwriter;
+	private String bcontent;
+	
+	public int getBno() {
+		return bno;
 	}
-	public void setParam1(String param1) {
-		this.param1 = param1;
+	public void setBno(int bno) {
+		this.bno = bno;
 	}
-	public int getParam2() {
-		return param2;
+	public String getBtitle() {
+		return btitle;
 	}
-	public void setParam2(int param2) {
-		this.param2 = param2;
+	public void setBtitle(String btitle) {
+		this.btitle = btitle;
 	}
-	public String getParam3() {
-		return param3;
+	public String getBwriter() {
+		return bwriter;
 	}
-	public void setParam3(String param3) {
-		this.param3 = param3;
+	public void setBwriter(String bwriter) {
+		this.bwriter = bwriter;
 	}
-	public String getParam4() {
-		return param4;
+	public String getBcontent() {
+		return bcontent;
 	}
-	public void setParam4(String param4) {
-		this.param4 = param4;
+	public void setBcontent(String bcontent) {
+		this.bcontent = bcontent;
 	}
-	private String param4;
+	
 }

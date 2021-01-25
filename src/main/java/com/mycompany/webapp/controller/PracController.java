@@ -1,11 +1,10 @@
 package com.mycompany.webapp.controller;
 
-import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -15,79 +14,135 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.sql.DataSource;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.mycompany.webapp.dto.LoginDto;
 import com.mycompany.webapp.dto.Prac2Dto;
 import com.mycompany.webapp.dto.PracBoardDto;
 import com.mycompany.webapp.dto.PracDto;
 import com.mycompany.webapp.dto.PracUpdown;
-import com.mycompany.webapp.service.PracService;
+import com.mycompany.webapp.dto.WriteDto;
 
 @Controller
 @RequestMapping("/prac")
 public class PracController {
 	
+	
 	private static final Logger logger = LoggerFactory.getLogger(PracController.class);
 	@GetMapping("/content")
 	public String content() {
-		logger.info("실행이 잘 되는군");
+		logger.info("실행");
 		return "prac/content";
 	}
 	
-	
-	@GetMapping("/myprac")
-	public String myprac() {
-		logger.info("실행이 잘 되는군");
-		return "prac/myprac";
+	@GetMapping("/login")
+	public String login() {
+		logger.info("로그인 창 호출하기");
+		return "prac/loginForm";
 	}
 	
-	@GetMapping("/sync")
-	public String sync() {
-		logger.info("동기로 로그인 띄우기");
-		return "prac/signinForm";
-	}
-
-	@GetMapping("/async")
-	public String asyncSignin() {
-		logger.info("비동기로 로그인 창 띄우기 성공");
-		return "prac/asyncForm";
-	}
-
-	
-	@PostMapping("/signinComplete")
-	public String signinComplete () {
-		logger.info("로그인 성공");
-		return "prac/content";
-	}
-	
-	@GetMapping("/asyncJoin")
-	public String asyncJoin() {
-		logger.info("회원가입 성공했으니 myprac으로 이동");
-		return "prac/joinForm";
-	}
-	
-	//DTO 구현하기
-	@PostMapping("/myDTO")
-	public String myDto(PracDto dto) {
-		logger.info("param1:"+ dto.getParam1());
-		logger.info("param1:"+ dto.getParam2());
-		logger.info("param1:"+ dto.getParam3());
-		logger.info("param1:"+ dto.getParam4());
+	@PostMapping("/loginAccess")
+	public String loginAccess(HttpSession session, String uid, String upw) {
+		logger.info("로그인 시도");
 		
-		return "prac/content";
+		LoginDto dto = new LoginDto(uid, upw);
+		logger.info("id:" + dto.getUid());
+		logger.info("pw:" + dto.getUpw());
+		logger.info(dto.toString());
+		
+//		String uid = req.getParameter("uid");
+//		String upw = req.getParameter("upw");
+//		logger.info("id, pw:" + uid + " " + upw);
+//		HttpSession session = req.getSession();		
+//		user = new LoginDto(uid);
+		session.setAttribute("loginStatus", dto);
+		return "redirect:/prac/content";
 	}
 	
+	@GetMapping("/logout")
+	public String logOut(HttpSession session) {
+		
+		logger.info("로그아웃");
+		session.invalidate();
+		
+		return "redirect:/prac/content";
+	}
+	
+	@GetMapping("/write")
+	public String write() {
+		logger.info("글쓰기 페이지로 이동");
+		return "prac/write";
+	}
+	
+	@PostMapping("/savewrite")
+	public String saveWrite(HttpSession session, String utitle, String uwriter, String ucontent, String udate, MultipartFile uphoto) {
+		WriteDto dto = new WriteDto(utitle, uwriter, ucontent, udate, uphoto);
+		session.setAttribute("write", dto);
+		logger.info(dto.toString());
+		return "redirect:/prac/content";
+	}
+	
+	@Resource
+	private DataSource datasource;
+	
+	@GetMapping("/conntest")
+	public String conntest(Model model) {
+		try {
+			Connection conn = datasource.getConnection();
+			model.addAttribute("result","연결 성공");
+			conn.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			model.addAttribute("result","연결 실패");
+		}
+		return "prac/conntest";
+	}
+	
+	@GetMapping("/jsonobject")
+	public void jsoinObject(HttpServletResponse response) throws IOException {
+		response.setContentType("application/json; charset=UTF-8");
+		PrintWriter pw = response.getWriter();
+		
+		JSONObject root = new JSONObject();
+		root.put("name","장연훈");
+		root.put("취미","운동");
+		
+		JSONObject car = new JSONObject();
+		car.put("brand", "Ferrari");
+		car.put("Color", "Ferrari Red");
+		car.put("price", 3000000);
+		root.put("dreamcar",car);
+		
+		JSONArray list = new JSONArray();
+		list.put("애쉬");
+		list.put("리퍼");
+		list.put("맥크리");
+		root.put("OverWatch", list);
+		
+		String json = root.toString();
+		pw.println(json);
+		logger.info(json);
+		
+	}
+	
+	@GetMapping()
+	
+	
+	
+	
+
 	//header 정보 얻기
 	@RequestMapping("/header")
 	public String header(@RequestHeader("User-Agent") String ua) {
@@ -104,7 +159,6 @@ public class PracController {
 		 
 		 logger.info(userAgent);
 		 return "prac/content";
-		 
 	 }
 	
 	//httpServletRequest httpServletMethod 으로 쿠키 보내기
@@ -166,11 +220,7 @@ public class PracController {
 		 dto.setAddress("서울시 관악구 쑥고개로21길 30 경동오피스텔 406호");
 		 
 		 model.addAttribute("myBoard",dto);
-		 
-		 
 		 return "prac/el";
-		
-		 
 	 }
 	 
 	 @RequestMapping("/collection")
@@ -188,21 +238,6 @@ public class PracController {
 		 return "prac/el";
 	 }
 	 
-	 @PostMapping("login")
-	 public String login(HttpSession session, String uid, String upw) {
-		 if(uid.equals("jyhoon94") && upw.equals("Zpflrjs94!")) {
-			 session.setAttribute("loginStatus", uid);
-		 }
-		 return "redirect: prac/content";
-	 }
-	 
-	 @RequestMapping("logout")
-	 public String logout(HttpSession session) {
-		 session.removeAttribute("loginStatus");
-		 session.invalidate();
-
-		 return "redirect:prac/content";
-	 }
 	
 	 
 	 @PostMapping("/upload")
@@ -242,74 +277,6 @@ public class PracController {
 		 return "redirect:/prac/content";
 	 }
 	 
-	 @GetMapping("/photolist")
-	 public String photoList(Model model) {
-		 String saveDir = "D:/MW/uploadfiles/";
-		 File dir = new File(saveDir);
-		 String [] fileNames = dir.list();
-		 model.addAttribute("fileNames", fileNames);
-		 
-		 return "prac/photoupload";
-	 }
-	 
-	 @GetMapping("/photodownload")
-	public void photoDownlaod(String photo, HttpServletResponse response) {
-			//photolist에서 photo라는 이름으로 요청을 했기 떄문에 똑같이 photo라는 이름으로 매개변수 선언
-			//void인 이유는 다운로드하고 끝이기 떄문에 응답이 없음. 브라우저는 응답이 올때까지 기다리게 됨.
-			//그래서 404페이지가 뜨는데 그 페이지에서는.jsp파일을 요구함 왜냐하면 web.xml에서 servletmapping에서 /로 되어있기 때문.
-			//따라서 명시적으로 응답을 만들어내주어야함.		
-//			response.setContentType("text/html; charset=UTF-8"); //응답으로 보내는 형식을 알려줌.
-			
-			// 응답 본문의 데이터의 종류를 응답 헤더에 추가하기
-			response.setCharacterEncoding("image/jpeg"); //DB 하게 되면 달라짐.
-
-			// 응답 본문의 데이터를 첨부파일로 다운로드할 수 있도록 응답 헤더에 추가하기
-			// 여기서 파일이름이 한글이면 한글이 깨지는 현상 발생 ==> 파일이름을 추가할 때 변환작업해주어야함.
-			
-			try {
-				photo = new String(photo.getBytes("UTF-8"),"ISO-8859-1");
-				response.setHeader("Content-Disposition", "attachment; filename=\"" + photo +  "\"");
-				//인코딩을 다시하는 이유: HTTP 규약에 따라 헤더에는 UTF-8이 들어갈 수 없고 ISO타입(알파벳)만 들어갈 수 있음.
-			} catch (Exception e1) {
-				e1.printStackTrace();
-			} 
-			
-			try {
-				OutputStream os = response.getOutputStream();
-				BufferedOutputStream bos = new BufferedOutputStream(os);
-				String saveDirPath = "D:/MW/uploadfiles/";
-				String filePath = saveDirPath + photo;
-				InputStream is = new FileInputStream(filePath);
-				
-//				byte [] data = new byte[1024];
-//				while(true) {
-//					int readNum = is.read(data);
-//					if(readNum ==-1) break;
-//					os.write(data, 0, readNum);
-//				}
-				
-				//Spring 기능으로 파일 복사 처리하기
-				FileCopyUtils.copy(is, bos);
-				
-				bos.flush();
-				bos.close();
-				is.close();
-				
-				//스트링타입으로 반응
-//				PrintWriter pw = response.getWriter();
-//				pw.println("<html>");
-//				pw.println("	<body>");
-//				pw.println("photoDownload의 응답");
-//				pw.println("	</body>");
-//				pw.println("</html>");
-//				
-//				pw.flush();
-//				pw.close();
-				
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
 	 
 	 @RequestMapping("/modellogin")
 		public String modelLogin(Model model) {
@@ -367,15 +334,6 @@ public class PracController {
 		return "redirect:/prac/loginPrac";
 	}
 	
-	@Resource
-	private PracService service1;
-	
-	@Autowired
-	public void setService1(PracService service1) {
-		logger.info("실행"); 
-		this.service1 = service1;
-		
-	}
 	
 	
 	

@@ -1,4 +1,4 @@
-package com.mycompany.webapp.controller;
+ package com.mycompany.webapp.controller;
 
 import java.util.ArrayList;
 import java.util.Date;
