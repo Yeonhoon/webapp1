@@ -2,6 +2,8 @@ package com.mycompany.webapp.dto;
 
 import java.util.Date;
 
+import org.springframework.web.multipart.MultipartFile;
+
 public class Ch14BoardDto {
 	
 	//DB 테이블의 컬럼을 저장하기 위해 DTO 생성하기
@@ -12,9 +14,10 @@ public class Ch14BoardDto {
 	private String bwriter;
 	private Date bdate;
 	private int bhitcount;
-	private String battach_savefile_name;
-	private String battach_original_name;
-	private String battach_type;
+	private MultipartFile battach;
+	private String battachsname;
+	private String battachoname;
+	private String battachtype;
 	
 	
 	public int getBno() {
@@ -53,23 +56,36 @@ public class Ch14BoardDto {
 	public void setBhitcount(int bhitcount) {
 		this.bhitcount = bhitcount;
 	}
-	public String getBattach_savefile_name() {
-		return battach_savefile_name;
+	public MultipartFile getBattach() {
+		return battach;
 	}
-	public void setBattach_savefile_name(String battach_savefile_name) {
-		this.battach_savefile_name = battach_savefile_name;
+	public void setBattach(MultipartFile battach) {
+		this.battach = battach;
 	}
-	public String getBattach_original_name() {
-		return battach_original_name;
+	public String getBattachsname() {
+		return battachsname;
 	}
-	public void setBattach_original_name(String battach_original_name) {
-		this.battach_original_name = battach_original_name;
+	public void setBattachsname(String battachsname) {
+		this.battachsname = battachsname;
 	}
-	public String getBattach_type() {
-		return battach_type;
+	public String getBattachoname() {
+		return battachoname;
 	}
-	public void setBattach_type(String battach_type) {
-		this.battach_type = battach_type;
+	public void setBattachoname(String battachoname) {
+		this.battachoname = battachoname;
 	}
+	public String getBattachtype() {
+		return battachtype;
+	}
+	public void setBattachtype(String battachtype) {
+		this.battachtype = battachtype;
+	}
+	@Override
+	public String toString() {
+		return "Ch14BoardDto [bno=" + bno + ", btitle=" + btitle + ", bcontent=" + bcontent + ", bwriter=" + bwriter
+				+ ", bdate=" + bdate + ", bhitcount=" + bhitcount + ", battach=" + battach + ", battachsname="
+				+ battachsname + ", battachoname=" + battachoname + ", battachtype=" + battachtype + "]";
+	}
+
 	
 }

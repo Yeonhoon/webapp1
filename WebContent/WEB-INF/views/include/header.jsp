@@ -5,13 +5,14 @@
 	<h3><a href="<%=application.getContextPath()%>"> Spring traningCamp</a></h3>
 	
 	<div class="loginBox" style="box-sizing:border-box;">
-		<c:if test="${loginStatus == null}">
-			<a id="logIn" class="btn btn-info btn-sm" href="<%=application.getContextPath()%>/ch08/content">로그인</a>
+		<c:if test="${sessionMid == null}">
+			<a id="logIn" class="btn btn-info btn-sm" href="<%=application.getContextPath()%>/ch14/join">회원가입</a>
+			<a id="logIn" class="btn btn-info btn-sm" href="<%=application.getContextPath()%>/ch14/login">로그인</a>
 		</c:if>
 		
-		<c:if test="${loginStatus!=null}">
-			<img src="<%=application.getContextPath()%>/resources/img/my.png" class="rounded-circle" width="40px">
-			<a id="logOut" class="btn btn-danger btn-sm" href="<%=application.getContextPath()%>/ch08/logout">로그아웃</a>
+		<c:if test="${sessionMid!=null}">
+			<img src="<%=application.getContextPath()%>/ch14/mphoto" class="rounded-circle" width="40px">
+			<a id="logOut" class="btn btn-danger btn-sm" href="<%=application.getContextPath()%>/ch14/logout">로그아웃</a>
 		</c:if>
 	</div>
 </div>

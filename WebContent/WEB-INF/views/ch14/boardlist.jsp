@@ -39,14 +39,39 @@
 										<tr>
 										<!-- vars: alias 값, items: 컨트롤러에서  모델에 넣은 value값 -->
 											<td>${board.bno}</td>
-											<td>${board.btitle }</td>
-											<td>${board.bwriter}</td>
+											<td><a class="text-decoration-none" href="boardread?bno=${board.bno}">${board.btitle}</a></td> <!-- get방식은 식별자로 넘겨주는게 일반적 -->
+											<td><img src="mphoto?mid=${board.bwriter}" class="rounded-circle" width="30px"></td>
 											<td>${board.bhitcount}</td>
 											<td><fmt:formatDate value="${board.bdate}" pattern="yyyy.MM.dd"/></td> 
 										</tr>
 									</c:forEach>
 								</table>
-							
+							<div class="d-flex justify-content-between align-items-center" >
+								<c:if test="${sessionMid != null}">
+									<a class="btn btn-sm btn-primary" href = "boardwrite">글쓰기</a>
+								</c:if>
+								<c:if test="${sessionMid == null}">
+									<span></span>
+								</c:if>
+								<div>
+									<a class="btn btn-outline-warning btn-sm mr-1" href="boardlist2?pageNo=1">처음</a>
+									<c:if test="${pager.groupNo > 1}">
+										<a class="btn btn-outline-warning btn-sm mr-1" href="boardlist2?pageNo=${pager.startPageNo-1}">이전</a>
+									</c:if>
+									<c:forEach var="idx" begin="${pager.startPageNo}" end="${pager.endPageNo}">
+										<c:if test="${idx== pager.pageNo}">
+											<a class="btn btn-danger btn-sm mr-1" href="boardlist2?pageNo=${idx}">${idx}</a>
+										</c:if>
+										<c:if test="${idx!= pager.pageNo}">
+											<a class="btn btn-outline-light btn-sm mr-1" href="boardlist2?pageNo=${idx}">${idx}</a>
+										</c:if>
+									</c:forEach>
+									<c:if test="${pager.groupNo < pager.totalGroupNo}"> <%--전체 그룹수 보다 적을 경우 --%>
+										<a class="btn btn-outline-warning btn-sm mr-1" href="boardlist2?pageNo=${pager.endPageNo+1}">다음</a>
+									</c:if>
+									<a class="btn btn-outline-warning btn-sm mr-1" href="boardlist2?pageNo=${pager.totalPageNo}">끝</a>
+								</div>
+							</div>
 							</div>
 						</div>
 						

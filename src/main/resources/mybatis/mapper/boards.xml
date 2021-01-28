@@ -1,18 +1,65 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="mybatis.mapper.boards">
+
+<mapper namespace="boards">
 	<select id="selectAll" resultType = "board"> <!-- resyltType: config.xml에서 alias로 저장한 이름 --> 
-		select bno, btitle, bcontent, bhitcount, bwriter, bdate from boards
+		select bno, btitle, bcontent, bhitcount, bwriter, bdate from boards order by bno desc
 	</select>
 	
+	<select id="countAll" resultType="int">
+		select count(*) from boards
+	</select>
+
+	<select id="selectByPage" parameterType="pager" resultType="board">  <!-- 줄것이 있고(parameter) 받을 것(resultType)이 있기 때문에 -->
+	 	select rno, bno, btitle,  bwriter, bhitcount, bdate 
+	   		from (
+	    		select rownum as rno, bno, btitle, bhitcount, bwriter, bdate 
+		   from (
+		      	  	select	bno, btitle, bhitcount, bwriter, bdate 
+		        	 from boards
+	            	 order by bno desc
+		            ) 
+		            where rownum &lt;= #{endRowNo} <!-- <는 태그의 시작이어서  xml에서 사용 불가. 문자참조형식으로 바꾸어서 사용해야 -->
+	            )
+		where rno &gt;= #{startRowNo}
+	</select>
+	
+	<select id="selectByPk" parameterType="int" resultType="board"> <!-- int라는 param을 주고 board라는 객체를 받음 -->
+		select bno, btitle, bcontent, bhitcount, bwriter, bdate, battachsname, battachoname, battachtype
+		 from boards
+		 where bno=#{bno}
+		
+	</select>
 	
 	<!-- 데이터 집어넣기 : not null 값은 모두 들어가야함.-->
 	<insert id= "insert" parameterType="board"> 
-		insert into boards
-		(bno, btitle, bcontent, bwriter,  bdate, bhitcount)
-		values
-		(bno_seq.nextval, #{btitle}, #{bcontent}, #{bwriter}, sysdate, 0)
-	
+		<if test="battachsname == null">
+			insert into boards
+			(bno, btitle, bcontent, bwriter,  bdate, bhitcount)
+			values
+			(bno_seq.nextval, #{btitle}, #{bcontent}, #{bwriter}, sysdate, 0)
+		</if>
+		<if test="battachsname !=null">
+			insert into boards
+			(bno, btitle, bcontent, bwriter,  bdate, bhitcount, battachsname, battachoname, battachtype)
+			values
+			(bno_seq.nextval, #{btitle}, #{bcontent}, #{bwriter}, sysdate, 0, #{battachsname}, #{battachoname}, #{battachtype})
+		</if>
 	</insert>
 	
+	<update id="update" parameterType="board">
+		update boards
+		set btitle = #{btitle}, bcontent = #{bcontent}
+		where bno = #{bno}
+	</update>
+	
+	<update id="updateHitcount">
+		update boards
+		set bhitcount = bhitcount+1
+		where bno = #{bno}
+	</update>
+	
+	<delete id="delete" parameterType= "int">
+		delete from boards where bno = #{bno}
+	</delete>
 </mapper>
