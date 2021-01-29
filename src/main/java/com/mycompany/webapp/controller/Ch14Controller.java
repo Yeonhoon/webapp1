@@ -40,7 +40,6 @@ import com.mycompany.webapp.dto.Ch14Pager;
 import com.mycompany.webapp.service.Ch14BoardService;
 import com.mycompany.webapp.service.Ch14EmployeeService;
 import com.mycompany.webapp.service.Ch14MemberService;
-import com.mycompany.webapp.service.Ch14OrderService;
 
 @Controller("ch14Controller") // 관리기능
 @RequestMapping("/ch14")
@@ -167,11 +166,13 @@ public class Ch14Controller {
 		return "ch14/boardlist";
 	}
 
+	//boardlist 보여주기
 	@GetMapping("/boardlist2")
 	public String boardlis2(@RequestParam(defaultValue = "1") int pageNo, Model model) { // requestParam: default값 설정
 
 		int totalRows = boardService.getTotalRows();
 		Ch14Pager pager = new Ch14Pager(6, 5, totalRows, pageNo);
+		
 		List<Ch14BoardDto> list = boardService.getBoardList(pager);
 		model.addAttribute("list", list);
 		model.addAttribute("pager", pager);
@@ -311,14 +312,16 @@ public class Ch14Controller {
 		is.close();
 	}
 
+	//상세보기 페이지 이동
 	@GetMapping("/boardread")
-	public String boardread(int bno, Model model) { // browser에서 요청한 값을 받은ㄱ ㅓㅅ.
+	public String boardread(int bno, Model model) { // browser에서 요청한 값을 받은 것
 		boardService.addHitcount(bno);
 		Ch14BoardDto board = boardService.getBoard(bno);
 		model.addAttribute("board", board);
 		return "ch14/boardread";
 	}
 
+	//수정 페이지 불러오기
 	@GetMapping("/boardupdate")
 	public String boardUpateForm(int bno, Model model) {
 		Ch14BoardDto board = boardService.getBoard(bno);
@@ -326,6 +329,7 @@ public class Ch14Controller {
 		return "ch14/boardupdate";
 	}
 
+	//수정 내용 저장하기
 	@PostMapping("/boardupdate")
 	public String boardupdate(Ch14BoardDto dto) {
 		// 서비스에게 업데이터 요청 전달
@@ -364,36 +368,6 @@ public class Ch14Controller {
 		     bos.close();
 		     is.close();
 		   }
-	
-	@Resource
-	private Ch14OrderService orderService;
-	
-	@GetMapping("/order")
-	public String order() {
-		
-		//주문 정보 얻기
-		Ch14OrderDto order = new Ch14OrderDto();
-		order.setMid("winter");
-		order.setAddress("서울시 관악구 쑥고개로21길 ");
-		
-		//주문상품정보 얻기(장바구니에서 가져와야됨)
-		List<Ch14OrderItemDto> list = new ArrayList<>();
-		Ch14OrderItemDto oi1 = new Ch14OrderItemDto();
-		
-		oi1.setPid("다이아몬드");
-		oi1.setAmount(100);
-		list.add(oi1);
-		
-		Ch14OrderItemDto oi2 = new Ch14OrderItemDto();
-		oi2.setPid("FERRARI");
-		oi1.setAmount(20);
-		list.add(oi2);
-		
-		orderService.order(order, list);
-		return "ch14/content";
-		
-	}
-	
 	
 	
 }

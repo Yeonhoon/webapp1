@@ -59,7 +59,7 @@
 							  <div class="form-group">
 							    <label for="bcontent">첨부</label><br />
 							    <c:if test="${board.battachsname !=null}">
-							    	<img class="rounded" src="battach?bno=${board.bno}" width="200px"/>
+							    	<img class="rounded" src="battach?bno=${board.bno}" width="200px"/><br /><br />
 							    	<a class="btn btn-light btn-sm ml-2" href="battach?bno=${board.bno}">다운로드</a>
 							    </c:if>
 							  </div>

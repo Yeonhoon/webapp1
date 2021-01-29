@@ -25,7 +25,7 @@
 				<jsp:include page="/WEB-INF/views/include/menu.jsp"></jsp:include>
 					<div class="content">
 						<div class="sector">
-							<div class="alert alert-primary" role="alert">게시물 수정</div>	
+							<div class="alert alert-primary" role="alert">게시물 수정</div>
 							<form name="boardupdateform" action="boardupdate" method="post">
 								<input type="hidden" name="bno" value="${board.bno}"/> <!-- hidden: 보이지는 않지만 데이터로 넘어감. -->
 							  <div class="form-group">
